@@ -1,8 +1,8 @@
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.action === "fetchPrice") {
     // const backend = "https://price-extension.onrender.com";
-    const backend = "https://unpliable-genoveva-penetratingly.ngrok-free.dev"
-    // const backend = "http://127.0.0.1:8080";
+    // const backend = "https://unpliable-genoveva-penetratingly.ngrok-free.dev"
+    const backend = "http://127.0.0.1:8080";
 
 
     chrome.storage.local.set({ status: "loading", lastUrl: msg.productUrl });
@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     fetch(apiUrl,{
       method:"GET",
       headers: {
-        "ngrok-skip-browser-warning": "true", // <--- THIS IS THE MAGIC KEY
+        "ngrok-skip-browser-warning": "true", 
         "Content-Type": "application/json"
       }
     })
