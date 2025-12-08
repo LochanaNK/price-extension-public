@@ -1,8 +1,8 @@
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.action === "fetchPrice") {
     // const backend = "https://price-extension.onrender.com";
-    // const backend = "http://127.0.0.1:8000/*"
-    const backend = "http://127.0.0.1:8080";
+    const backend = "https://unpliable-genoveva-penetratingly.ngrok-free.dev"
+    // const backend = "http://127.0.0.1:8080";
 
 
     chrome.storage.local.set({ status: "loading", lastUrl: msg.productUrl });
@@ -10,7 +10,13 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
     const apiUrl = `${backend}/compare?url=${encodeURIComponent(msg.productUrl)}`;
 
-    fetch(apiUrl)
+    fetch(apiUrl,{
+      method:"GET",
+      headers: {
+        "ngrok-skip-browser-warning": "true", // <--- THIS IS THE MAGIC KEY
+        "Content-Type": "application/json"
+      }
+    })
       .then(res =>{
         if(!res.ok){
             throw new Error(`Server status: ${res.status}`);
@@ -24,6 +30,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
                 status: "complete",
                 results: data
             });
+            console.log(data)
         }catch(e){
             console.error("CRITICAL BACKEND ERROR: Response was not JSON.");
             console.error("Server returned: ",text);
