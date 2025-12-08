@@ -27,6 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Normalize data structure
     let data = items;
+
+    if(!items)return "";
+
     if (!Array.isArray(items)) {
         if (items.lowest || items.highest) {
             data = Object.values(items);
