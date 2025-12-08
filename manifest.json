@@ -12,6 +12,7 @@
     }
   },
   "background": {
+    "worker_service": "src/background.js",
     "scripts": ["src/background.js"]
   },
   "permissions": ["storage", "activeTab", "scripting","storage"],
