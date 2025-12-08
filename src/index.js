@@ -20,14 +20,28 @@ document.addEventListener("DOMContentLoaded", () => {
   function render(items) {
     loading.classList.add("hidden");
     
+    // --- DEBUGGING START ---
+    // 1. Log the full response to the console so you can inspect it
+    console.log("Full Backend Response:", items);
+    // -----------------------
+
     // Normalize data structure
     let data = items;
     if (!Array.isArray(items)) {
         if (items.lowest || items.highest) {
             data = Object.values(items);
         } else {
-            resultsDiv.innerHTML = "<p>Unexpected backend response</p>";
+            // --- DEBUGGING CHANGE ---
+            // Instead of just saying "Unexpected backend response", 
+            // we print the actual JSON so you can see if it's an error message.
+            resultsDiv.innerHTML = `
+                <p style="color:red; font-weight:bold;">Unexpected Response:</p>
+                <pre style="background:#f4f4f4; padding:5px; font-size:11px; overflow:auto;">
+                    ${JSON.stringify(items, null, 2)}
+                </pre>
+            `;
             return;
+            // ------------------------
         }
     }
 
