@@ -1,7 +1,7 @@
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.action === "fetchPrice") {
-    // const backend = "https://price-extension.onrender.com";
-    const backend = "http://127.0.0.1:8000/*"
+    const backend = "https://price-extension.onrender.com";
+    // const backend = "http://127.0.0.1:8000/*"
     // const backend = "http://127.0.0.1:8080";
 
 
