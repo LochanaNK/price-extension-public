@@ -1,5 +1,7 @@
 # 🛒 AliExpress vs. Daraz Price Comparator (Client)
 
+**⚠️ Note:** this is the client side of the project 
+
 A lightweight browser extension that helps you find the best prices in Sri Lanka. 
 
 When you browse a product on **AliExpress**, this extension automatically searches for the same item on **Daraz.lk** and shows you a side-by-side price comparison, so you can decide where to buy.
@@ -7,6 +9,33 @@ When you browse a product on **AliExpress**, this extension automatically search
 > **⚠️ Important:** This extension connects to a private backend server. It will only function when the host server is online.
 
 ---
+
+## 🏗️ System Architecture
+
+This project is a distributed system consisting of two parts:
+
+1.  **Client (This Repo):** A Chrome Extension (Manifest V3) that handles the UI and user interaction.
+2.  **Server (Private):** A robust backend hosted locally and tunneled via **Ngrok**.
+
+**Backend Technologies Used:**
+* **Python 3.10 & FastAPI:** For high-performance API handling.
+* **Playwright:** To scrape dynamic JavaScript-heavy sites (AliExpress/Daraz).
+* **Smart Matching Algorithm:** Uses fuzzy string matching to pair products across different platforms.
+
+> *Note: The backend source code is currently in a private repository for security reasons (API keys & anti-bot configurations).*
+
+
+## 🔄 How it Works
+
+```mermaid
+graph LR
+    User[User] -->|Click Extension| Client[Chrome Extension]
+    Client -->|Secure Request| Tunnel[Ngrok Tunnel]
+    Tunnel -->|Forward| Server[FastAPI Backend]
+    Server -->|Scrape| Ali[AliExpress]
+    Server -->|Search| Daraz[Daraz.lk]
+    Server -->|Compare Prices| Logic[Comparison Logic]
+    Logic -->|JSON Result| Client
 
 ## ✨ Features
 
