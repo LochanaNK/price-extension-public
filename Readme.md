@@ -40,8 +40,6 @@ graph LR
 ```
 ✨ Features
 
-    Instant Comparison: View local Daraz prices without leaving the AliExpress product page.
-
     Automatic Search: Finds the most relevant matching item using smart title matching.
 
     Simple UI: Clean popup showing the lowest and highest price options.
@@ -70,17 +68,13 @@ Step 2: Load into Browser
     Select the folder you extracted in Step 1 (select the folder containing manifest.json).
 
 The extension icon should now appear in your browser toolbar! 🧩
-🚀 How to Use
+## 🚀 How to Use
 
-    Go to any product page on AliExpress.com.
-
-    Note: This tool is still under development, so it works best on standard product pages.
-
-    Click the Price Comparator icon in your browser toolbar.
-
-    Wait a few seconds for the scan to complete.
-
-    See the price difference between AliExpress and Daraz.
+1.  Go to a product page on [AliExpress.com](https://www.aliexpress.com).
+2.  Click the **Price Comparator** icon in your browser toolbar.
+3.  Copy and paste the link to the product.(**Note** some products might not work or display different prices).
+4.  Wait a few seconds for the scan to complete.
+5.  See the price difference between AliExpress and Daraz.
 
 ❓ Troubleshooting
 
