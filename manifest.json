@@ -16,5 +16,5 @@
     "scripts": ["src/background.js"]
   },
   "permissions": ["storage", "activeTab", "scripting","storage"],
-  "host_permissions": ["https://price-extension.onrender.com/*", "http://127.0.0.1:8080/*","http://127.0.0.1:8000/*"]
+  "host_permissions": ["https://price-extension.onrender.com/*", "http://127.0.0.1:8080/*","http://127.0.0.1:8000/*","http://192.168.1.83:8080/*"]
 }

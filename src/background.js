@@ -1,51 +1,41 @@
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.action === "fetchPrice") {
-    // const backend = "https://price-extension.onrender.com";
-    // const backend = "https://unpliable-genoveva-penetratingly.ngrok-free.dev"
-    const backend = "http://127.0.0.1:8080";
 
-
-    chrome.storage.local.set({ status: "loading", lastUrl: msg.productUrl });
-
-
-    const apiUrl = `${backend}/compare?url=${encodeURIComponent(msg.productUrl)}`;
-
-    fetch(apiUrl,{
-      method:"GET",
-      headers: {
-        "ngrok-skip-browser-warning": "true", 
-        "Content-Type": "application/json"
-      }
-    })
-      .then(res =>{
-        if(!res.ok){
-            throw new Error(`Server status: ${res.status}`);
-        }
-        return res.text();
-      })
-      .then(text =>{
-        try{
-            const data = JSON.parse(text);
-            chrome.storage.local.set({
-                status: "complete",
-                results: data
-            });
-            console.log(data)
-        }catch(e){
-            console.error("CRITICAL BACKEND ERROR: Response was not JSON.");
-            console.error("Server returned: ",text);
-
-            throw new Error("Invalid JSON response from server");
-        }
-      })
-      .catch(err=>{
-        console.error(err);
-        chrome.storage.local.set({
-            status:"error",
-            errorMsg:err.toString()
-        });
-      });
-
-    return false;
+    hanldeFetchPrice(msg);
+    return true;
   }
 });
+
+//     // const backend = "https://unpliable-genoveva-penetratingly.ngrok-free.dev"
+//     const backend = "http://192.168.1.83:8080";
+
+
+async function hanldeFetchPrice(msg){
+  const backend = "http://127.0.0.1:8080";
+  const apiUrl = `${backend}/compare?url=${encodeURIComponent(msg.productUrl)}`;
+
+  try{
+    await chrome.storage.local.set({status:"loading",lastUrl:msg.productUrl});
+
+    const res = await fetch(apiUrl,{
+      method:"GET",
+      mode:"cors",
+      headers:{"Content-Type":"application/json"}
+    });
+
+    if(!res.ok){
+      throw new Error(`Server status: ${res.status}`);
+    }
+
+    const data = await res.json();
+    await chrome.storage.local.set({status:"complete",results:data});
+    console.log("Success:",data);
+  
+  }catch(err){
+    console.error("Network/Cors Error:",err);
+    await chrome.storage.local.set({
+      status:"error",
+      errorMsg:"Ensure your phone server is running and on the same Wi-Fi"
+    });
+  }
+}
