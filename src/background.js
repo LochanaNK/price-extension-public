@@ -1,41 +1,44 @@
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.action === "fetchPrice") {
 
-    hanldeFetchPrice(msg);
+    handleFetchPrice(msg,sendResponse);
     return true;
   }
 });
 
-//     // const backend = "https://unpliable-genoveva-penetratingly.ngrok-free.dev"
-//     const backend = "http://192.168.1.83:8080";
 
 
-async function hanldeFetchPrice(msg){
-  const backend = "http://127.0.0.1:8080";
-  const apiUrl = `${backend}/compare?url=${encodeURIComponent(msg.productUrl)}`;
 
-  try{
-    await chrome.storage.local.set({status:"loading",lastUrl:msg.productUrl});
+async function handleFetchPrice(msg,sendResponse) {
+    // Construct the URL using the URL API
+    const targetUrl = new URL("https://unpliable-genoveva-penetratingly.ngrok-free.dev/compare");
+    targetUrl.searchParams.append("url", msg.productUrl);
 
-    const res = await fetch(apiUrl,{
-      method:"GET",
-      mode:"cors",
-      headers:{"Content-Type":"application/json"}
-    });
+    try {
+        await chrome.storage.local.set({ status: "loading", lastUrl: msg.productUrl });
 
-    if(!res.ok){
-      throw new Error(`Server status: ${res.status}`);
+        console.log("Forcing HTTP Fetch to:", targetUrl.toString());
+
+        const response = await fetch(targetUrl.toString(), {
+            method: "GET",
+            headers:{
+              "Content-Type":"application/json",
+              "ngrok-skip-browser-warning": "true"
+            },
+
+        });
+
+        if(!response.ok) throw new Error(`HTTP Error:${response.status}`);
+
+        const data = await response.json();
+        await chrome.storage.local.set({ status: "complete", results: data });
+
+        sendResponse({status:"success",data:data});
+
+    } catch (err) {
+        console.error("The browser still blocked the request:", err);
+        await chrome.storage.loacl.set({status:"error",errorMsg:err.toString()});
+
+        sendResponse({status:"error",message:err.toString()});
     }
-
-    const data = await res.json();
-    await chrome.storage.local.set({status:"complete",results:data});
-    console.log("Success:",data);
-  
-  }catch(err){
-    console.error("Network/Cors Error:",err);
-    await chrome.storage.local.set({
-      status:"error",
-      errorMsg:"Ensure your phone server is running and on the same Wi-Fi"
-    });
-  }
 }
